@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://img.icons8.com/wired/128/00f0ff/active-state.png" width="100" height="100">
   <h1>📈 Trading Pulse Engine</h1>
   <p><b>Advanced Risk Prioritization & Algorithmic Watchlist Architecture</b></p>
   
