@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_standardized_errors',
+    'drf_yasg',
     
     # Local
     'accounts',

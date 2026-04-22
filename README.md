@@ -55,45 +55,54 @@ To signal senior-level production readiness, this backend implements elite archi
 
 ---
 
-## 💻 Sample API Interaction
+## 🚀 API Documentation & UI
 
-**Endoint Base:** `/api/v1/`
+This project features comprehensive, auto-generated documentation for rapid developer onboarding.
 
-### 1. Adding an Asset ($POST$ `/watchlist/`)
+- **Swagger UI**: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
+- **ReDoc**: [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
+
+### Sample Request: Add to Watchlist
+**`POST /api/v1/watchlist/`**
 ```json
 {
-  "symbol": "ETHUSDT",
-  "target_price": "3950.00",
-  "current_price": "3900.00"
+  "symbol": "BTCUSDT",
+  "target_price": "71500.00",
+  "current_price": "72000.00",
+  "entry_price": "60000.00"
 }
 ```
 
-### 2. Intelligent Response (`201 Created`)
-*Notice the dynamically calculated `risk_analysis`.*
+### Sample Response
+**`201 Created`**
+*Notice how the system dynamically returns calculated Risk Scores and High-Priority Intelligence.*
 ```json
 {
-  "id": 16,
-  "symbol": "ETHUSDT",
-  "target_price": "3950.00",
-  "current_price": "3900.00",
+  "id": 1,
+  "symbol": "BTCUSDT",
+  "target_price": "71500.00",
+  "current_price": "72000.00",
+  "entry_price": "60000.00",
+  "notes": "",
   "risk_analysis": {
     "risk_level": "HIGH",
-    "risk_score": 0.0126,
+    "risk_score": 0.0069,
     "insight": "High probability trigger; current price is within 2% of target."
-  }
+  },
+  "created_at": "2026-04-22T08:00:00Z"
 }
 ```
 
-### Standardized Status Protocols
-- `200 OK` (Standard Read)
-- `201 Created` (Asset Monitored)
-- `400 Bad Request` (Failed Constraints, returned as mapped Standardized Errors)
-- `401 Unauthorized` (Token Expiry)
-- `403 Forbidden` (RBAC Intrusion Attempt)
+### HTTP Status Code Discipline
+* `200 OK` - Standard successful read/update.
+* `201 Created` - Resource allocation successful.
+* `400 Bad Request` - Standardized validation failure schema.
+* `401 Unauthorized` - Token expired or invalid.
+* `403 Forbidden` - RBAC violation.
 
 ---
 
-## 🛠️ Execution & Testing Guide
+## 💻 Local Setup & Execution & Testing Guide
 
 This project is Dockerized to keep your local machine pristine. 
 
