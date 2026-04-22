@@ -1,22 +1,25 @@
 <div align="center">
-  <h1>📈 Trading Watchlist API & Risk Engine</h1>
-  <p><i>A production-grade algorithmic watchlist backend engineered for high-frequency trading data.</i></p>
+  <img src="https://img.icons8.com/wired/128/00f0ff/active-state.png" width="100" height="100">
+  <h1>📈 Trading Pulse Engine</h1>
+  <p><b>Advanced Risk Prioritization & Algorithmic Watchlist Architecture</b></p>
+  
+  <p><i>A production-grade backend system engineered for extreme performance, security, and market-ready data integrity.</i></p>
 
   [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](#)
-  [![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)](#)
-  [![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](#)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](#)
+  [![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](#)
   [![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)](#)
 </div>
 
 ---
 
-## 🚀 Project Overview
+## 🎯 The Vision
 
-Most standard watchlists act as simple CRUD repositories. **This system is different.** It features a decoupled, injected **Risk Engine** that evaluates real-time price volatility against user-defined target thresholds, calculating actionable risk levels.
+In high-frequency trading, every millisecond counts. Simple CRUD applications fail to meet the "pulse" of the market. **Trading Pulse Engine** is built to bridge that gap—combining a stateless high-throughput API with an intelligent **Risk Engine** that provides real-time prioritization insights.
 
-It is built with strict backend engineering principles: strict tenant isolation via RBAC, active query caching, explicit Service layers, and standardized exception handling.
-
-**Future-Proofing Note:** *The architectural boundaries (Views → Services → Models) deliberately allow swapping standard HTTP requests with WebSocket streams (`django-channels`) for real-time asset ticking without rewriting the core business domains.*
+> [!TIP]
+> **Key Differentiator**: This isn't a task list. It's a decoupled data pipeline using **Services** and **Event-Driven Signals** to ensure high-speed decision making.
 
 ---
 
@@ -24,112 +27,118 @@ It is built with strict backend engineering principles: strict tenant isolation 
 
 ```mermaid
 graph TD
-    Client[React Frontend / Pulse UI] -- HTTP/JWT --> API[Django REST API Gateway]
+    Client[React Pulse UI] -- "Stateless JWT Auth" --> API[Django REST API Gateway]
     
-    subgraph "Backend Intelligence Layer"
-        API -- Middleware --> Telemetry[Performance Tracking Middleware]
-        API -- Validation --> View[Watchlist Viewsets]
-        View -- "Risk Logic" --> Service[Risk Engine Service]
+    subgraph "Intelligent Logic Layer"
+        API -- "Observability" --> Telemetry[Performance Tracking Middleware]
+        API -- "Validation" --> View[Watchlist Viewsets]
+        View -- "Isolated Logic" --> Service[Risk Engine Service]
     end
 
-    subgraph "Data & Event Layer"
-        Service -- CRUD --> DB[(PostgreSQL / SQLite)]
-        View -- Signals --> Audit[Event-Driven Audit Log]
-        API -- Cache-Aside --> Memory[LocMem / Redis Cache]
+    subgraph "Data & Integrity Layer"
+        Service -- "ACID Compliance" --> DB[(Core Database)]
+        View -- "Async Dispatch" --> Audit[Audit Ledger Signal]
+        API -- "Caching" --> Memory[Memory-Resident Cache]
     end
 
-    Telemetry -- "Inject Header" --> Client
+    Telemetry -- "Telemetry Headers" --> Client
 ```
 
-### 🧠 The "WOW" Engineering Decisions
+---
 
-To signal senior-level production readiness, this backend implements elite architectural patterns:
+## 🔥 Elite Engineering Pillars
 
-| Pillar | Feature | Technical Impact |
-| :--- | :--- | :--- |
-| **Observability** | **Performance Middleware** | Injects `X-Execution-Time` headers into every response. Demonstrates obsession with latency and system transparency. |
-| **Reliability** | **CheckConstraints** | Mathematical bounds enforced at the DB level (`current_price > 0`). Prevents data corruption even if API logic fails. |
-| **Scalability** | **Cache-Aside Pattern** | Native support for `LocMemCache` (Local) and `Redis` (Production), reducing DB IOPS by up to 80% on high-read trading dashboards. |
-| **Compliance** | **Event-Driven Audit** | Utilizes **Django Signals** to decouple auditing from business logic. Every price change generates an immutable background ledger entry. |
-| **Resilience** | **Health Topology** | `/api/v1/health/` verifies Database and Cache connectivity individually, a requirement for modern Kubernetes-led microservices. |
+### 1. High-Precision Observability
+Unlike standard APIs, every response from this engine includes an `X-Execution-Time` header. We utilize custom **Middleware** to intercept the request-response lifecycle, measuring execution latency to the microsecond.
+
+### 2. Event-Driven Compliance (Audit Trails)
+Using **Django Signals**, auditing is completely decoupled from the HTTP response. Every creation, update, or soft-deletion fires an asynchronous internal event, building an immutable background ledger (`WatchlistAuditLog`) without blocking the user.
+
+### 3. "Bulletproof" Data Integrity
+We don't trust application-layer validation alone. The schema implements **Database-Level CheckConstraints**, ensuring mathematical sanity (`price > 0`) even if the API is bypassed.
+
+### 4. Zero-Downtime Microservices Design
+We include a dedicated `/api/v1/health/` topology endpoint. It verifies the "Pulse" of the database and caching clusters individually, making it instantly ready for Kubernetes-led health monitoring.
 
 ---
 
 ## 🚀 API Documentation & UI
 
-This project features comprehensive, auto-generated documentation for rapid developer onboarding.
+Access our interactive documentation to explore the engine's full capabilities:
 
 - **Swagger UI**: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
-- **ReDoc**: [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
+- **ReDoc UI**: [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
 
-### Sample Request: Add to Watchlist
+### Smart Payload Example
 **`POST /api/v1/watchlist/`**
 ```json
 {
   "symbol": "BTCUSDT",
-  "target_price": "71500.00",
-  "current_price": "72000.00",
-  "entry_price": "60000.00"
+  "target_price": "68500.00",
+  "current_price": "67900.00"
 }
 ```
 
-### Sample Response
-**`201 Created`**
-*Notice how the system dynamically returns calculated Risk Scores and High-Priority Intelligence.*
+**Intelligence Response** (`201 Created`):
 ```json
 {
-  "id": 1,
-  "symbol": "BTCUSDT",
-  "target_price": "71500.00",
-  "current_price": "72000.00",
-  "entry_price": "60000.00",
-  "notes": "",
+  "id": 42,
   "risk_analysis": {
     "risk_level": "HIGH",
-    "risk_score": 0.0069,
+    "risk_score": 0.0088,
     "insight": "High probability trigger; current price is within 2% of target."
-  },
-  "created_at": "2026-04-22T08:00:00Z"
+  }
 }
 ```
-
-### HTTP Status Code Discipline
-* `200 OK` - Standard successful read/update.
-* `201 Created` - Resource allocation successful.
-* `400 Bad Request` - Standardized validation failure schema.
-* `401 Unauthorized` - Token expired or invalid.
-* `403 Forbidden` - RBAC violation.
 
 ---
 
-## 💻 Local Setup & Execution & Testing Guide
+## 🛡️ Security Matrix
 
-This project is Dockerized to keep your local machine pristine. 
+- **JWT Auth**: Rotating tokens with 15-minute TTL.
+- **RBAC**: Multi-tenant isolation ensuring Users only access their own matrix.
+- **Throttling**: Integrated `UserRateThrottle` to prevent algorithmic abuse.
+- **CORS**: Strict Origin controls configured for production readiness.
 
-### 1. Initialize the backend
+---
+
+## 💻 Local Setup & Execution
+
+### 1. Initialize Operating Core
 ```bash
 python -m venv venv
-source venv/bin/activate  # (or venv\Scripts\activate on Windows)
+source venv/bin/activate  # Windows: .\venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py makemigrations accounts watchlist
 python manage.py migrate
 ```
 
-### 3. Run the Automated Test Suite
-Unit tests strictly evaluate the bounds of the Risk Engine and JWT Auth flow handling.
+### 2. Launch Engine & UI
+```bash
+# Terminal 1: Backend
+python manage.py runserver
+
+# Terminal 2: Frontend
+cd frontend
+npm install && npm run dev
+```
+
+### 3. Validation Suite
 ```bash
 python manage.py test accounts watchlist
 ```
 
-### 4. Experience the Platform
-Launch the API:
-```bash
-python manage.py runserver
-```
-Launch the UI (React / Vite):
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Navigate to the local port hosted by Vite, create an account, and experience the UI interacting with the risk intelligence API. 
+---
+
+## 🔮 Future Scalability Path
+
+- [ ] **WebSockets**: Transitioning the Risk Engine to `django-channels` for real-time tickers.
+- [ ] **Celery Workers**: Moving audit log signal processing to Redis-backed worker queues.
+- [ ] **Docker Swarm**: Production-ready container orchestration files.
+
+---
+
+<div align="center">
+  <p><b>Designed & Engineered for Primetrade.ai</b></p>
+  <p>Built with ❤️ by Manoj Kumar</p>
+</div>
